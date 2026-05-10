@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Telegram Site UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="backdrop"></div>
+  <div class="noise"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">TG</div>
+      <div>
+        <div class="brand-title">Telegram Site</div>
+        <div class="brand-subtitle">Auth, OTP, Profile</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="ghost" type="button">Docs</button>
+      <button class="primary" type="button">Get API Key</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="pill">Secure access flow</div>
+        <h1>Build a clean auth experience on top of your API.</h1>
+        <p>
+          This UI wires to the Express endpoints under /api. Use it to test
+          register, login, OTP verification, and profile updates.
+        </p>
+        <div class="hero-actions">
+          <button class="primary" type="button">Launch Flow</button>
+          <button class="ghost" type="button">Explore Endpoints</button>
+        </div>
+        <div class="metrics">
+          <div class="metric-card">
+            <div class="metric-value">1h</div>
+            <div class="metric-label">Token lifetime</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">10m</div>
+            <div class="metric-label">OTP window</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">100</div>
+            <div class="metric-label">Requests / 15m</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Status</div>
+            <div class="panel-subtitle">Live request monitor</div>
+          </div>
+          <span class="badge">Ready</span>
+        </div>
+        <div class="panel-body">
+          <div class="log-row">
+            <span class="log-dot ok"></span>
+            <span>API base: http://localhost:3000/api</span>
+          </div>
+          <div class="log-row">
+            <span class="log-dot warn"></span>
+            <span>Auth limiter enabled</span>
+          </div>
+          <div class="log-row">
+            <span class="log-dot ok"></span>
+            <span>Mailer configured</span>
+          </div>
+          <div class="log-row">
+            <span class="log-dot ok"></span>
+            <span>Database connected</span>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <button class="ghost" type="button">View Logs</button>
+          <button class="primary" type="button">Ping API</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="flow">
+      <div class="flow-header">
+        <h2>Auth flow console</h2>
+        <p>Switch between forms and fire requests to your API.</p>
+      </div>
+      <div class="flow-tabs" role="tablist">
+        <button class="tab active" data-tab="register" type="button">Register</button>
+        <button class="tab" data-tab="verify" type="button">Verify OTP</button>
+        <button class="tab" data-tab="login" type="button">Login</button>
+        <button class="tab" data-tab="forgot" type="button">Forgot</button>
+        <button class="tab" data-tab="reset" type="button">Reset</button>
+        <button class="tab" data-tab="view-profile" type="button">View Profile</button>
+        <button class="tab" data-tab="profile" type="button">Update Profile</button>
+      </div>
+
+      <div class="flow-grid">
+        <form class="card active" data-panel="register">
+          <h3>Create account</h3>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" placeholder="Min 8 chars" required />
+          </label>
+          <button class="primary" type="submit">Register</button>
+          <p class="helper">Check your inbox for the OTP code.</p>
+          <pre class="output" aria-live="polite"></pre>
+        </form>
+
+        <form class="card" data-panel="verify">
+          <h3>Verify OTP</h3>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            OTP code
+            <input name="otp" type="text" placeholder="6 digits" required />
+          </label>
+          <button class="primary" type="submit">Verify</button>
+          <p class="helper">OTP expires quickly. Use the latest code.</p>
+          <pre class="output" aria-live="polite"></pre>
+        </form>
+
+        <form class="card" data-panel="login">
+          <h3>Sign in</h3>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" placeholder="Your password" required />
+          </label>
+          <button class="primary" type="submit">Login</button>
+          <p class="helper">Token will appear in the response.</p>
+          <pre class="output" aria-live="polite"></pre>
+        </form>
+
+        <form class="card" data-panel="forgot">
+          <h3>Forgot password</h3>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <button class="primary" type="submit">Send OTP</button>
+          <p class="helper">We will send a reset OTP to your email.</p>
+          <pre class="output" aria-live="polite"></pre>
+        </form>
+
+        <form class="card" data-panel="reset">
+          <h3>Reset password</h3>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            OTP code
+            <input name="otp" type="text" placeholder="6 digits" required />
+          </label>
+          <label>
+            New password
+            <input name="password" type="password" placeholder="New password" required />
+          </label>
+          <button class="primary" type="submit">Reset</button>
+          <p class="helper">Use the OTP from the reset email.</p>
+          <pre class="output" aria-live="polite"></pre>
+        </form>
+
+        <form class="card" data-panel="view-profile">
+          <h3>View profile</h3>
+          <label>
+            Bearer token
+            <input name="token" type="text" placeholder="Paste JWT token" required />
+          </label>
+          <button class="primary" type="submit">Fetch Profile</button>
+          <p class="helper">Get your current profile information.</p>
+          <pre class="output" aria-live="polite"></pre>
+        </form>
+
+        <form class="card" data-panel="profile">
+          <h3>Update profile</h3>
+          <label>
+            Bearer token
+            <input name="token" type="text" placeholder="Paste JWT token" required />
+          </label>
+          <label>
+            Full name
+            <input name="fullName" type="text" placeholder="Optional" />
+          </label>
+          <label>
+            Phone
+            <input name="phone" type="text" placeholder="Optional" />
+          </label>
+          <label>
+            Bio
+            <textarea name="bio" rows="3" placeholder="Optional"></textarea>
+          </label>
+          <button class="primary" type="submit">Update</button>
+          <p class="helper">Requires a valid JWT in the Authorization header.</p>
+          <pre class="output" aria-live="polite"></pre>
+        </form>
+
+        <aside class="card info">
+          <h3>Endpoint map</h3>
+          <ul class="endpoint-list">
+            <li><span>POST</span> /api/auth/register</li>
+            <li><span>POST</span> /api/auth/verify-otp</li>
+            <li><span>POST</span> /api/auth/login</li>
+            <li><span>POST</span> /api/auth/forgot-password</li>
+            <li><span>POST</span> /api/auth/reset-password</li>
+            <li><span>GET</span> /api/users/profile</li>
+            <li><span>PUT</span> /api/users/profile</li>
+          </ul>
+          <div class="hint">
+            Tip: Run your server, then open this file in a static server or
+            mount it in Express.
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Telegram Site UI</span>
+    <span>Built for Express + MySQL</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
