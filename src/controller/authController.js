@@ -1,9 +1,12 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { createClient } from 'redis';
 import db from '../models/index';
 
 const ACCESS_EXPIRES_IN = '15m';
 const REFRESH_EXPIRES_IN = '7d';
+const REFRESH_TTL_SECONDS = 7 * 24 * 60 * 60;
+const REDIS_CONNECT_TIMEOUT_MS = Number(process.env.REDIS_CONNECT_TIMEOUT_MS) || 2000;
 
 const isBrowserFormRequest = (req) => {
     const contentType = req.headers['content-type'] || '';
@@ -18,6 +21,43 @@ const redirectToLoginWithMessage = (res, message, email = '') => {
         email,
     });
     return res.redirect(`/login?${query.toString()}`);
+};
+
+const getRedisClient = (() => {
+    let client;
+
+    return () => {
+        if (client) return client;
+
+        const url = process.env.REDIS_URL;
+        if (url) {
+            client = createClient({ url });
+        } else {
+            client = createClient({
+                socket: {
+                    host: process.env.REDIS_HOST || '127.0.0.1',
+                    port: Number(process.env.REDIS_PORT) || 6379,
+                },
+            });
+        }
+
+        client.on('error', (err) => {
+            console.error('Redis client error:', err);
+        });
+
+        return client;
+    };
+})();
+
+const ensureRedisConnected = async (client) => {
+    if (!client.isOpen) {
+        await Promise.race([
+            client.connect(),
+            new Promise((_, reject) => {
+                setTimeout(() => reject(new Error('Redis connect timeout')), REDIS_CONNECT_TIMEOUT_MS);
+            }),
+        ]);
+    }
 };
 
 const login = async (req, res) => {
@@ -65,6 +105,17 @@ const login = async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: REFRESH_EXPIRES_IN }
         );
+
+        try {
+            const redisClient = getRedisClient();
+            await ensureRedisConnected(redisClient);
+            await redisClient.set(`refresh_token:${user.id}`, refreshToken, {
+                EX: REFRESH_TTL_SECONDS,
+            });
+        } catch (redisError) {
+            // Avoid hanging login flow if Redis is unavailable in local/dev setup.
+            console.error('Redis unavailable, skip storing refresh token:', redisError.message);
+        }
 
         // Store tokens in HttpOnly cookies to reduce XSS exposure.
         res.cookie('accessToken', accessToken, {
