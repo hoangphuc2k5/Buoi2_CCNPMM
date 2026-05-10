@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "1234",
-    "database": "otp_db",
+    "password": "123456",
+    "database": "bai2",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
