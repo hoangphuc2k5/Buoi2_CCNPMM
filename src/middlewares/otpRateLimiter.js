@@ -20,7 +20,7 @@ const preventRapidOtp = async (req, res, next) => {
     });
 
     if (emailCount >= 3) {
-      return res.redirect(`/forgot-password?email=${encodeURIComponent(email)}&message=${encodeURIComponent('Email này đã gửi quá 3 mã OTP trong 10 phút. Vui lòng thử lại sau.')}&success=false`);
+      return res.redirect(`/forgot-password?email=${encodeURIComponent(email)}&message=${encodeURIComponent('Email nay da gui qua 3 ma OTP trong 10 phut. Vui long thu lai sau.')}&success=false`);
     }
 
     const ipCount = await db.OtpRequest.count({
@@ -31,7 +31,7 @@ const preventRapidOtp = async (req, res, next) => {
     });
 
     if (ipCount >= 3) {
-      return res.redirect(`/forgot-password?email=${encodeURIComponent(email)}&message=${encodeURIComponent('Đã gửi quá nhiều yêu cầu OTP từ IP này trong 10 phút. Vui lòng thử lại sau.')}&success=false`);
+      return res.redirect(`/forgot-password?email=${encodeURIComponent(email)}&message=${encodeURIComponent('Da gui qua nhieu yeu cau OTP tu IP nay trong 10 phut. Vui long thu lai sau.')}&success=false`);
     }
 
     const existingOtp = await db.OtpCode.findOne({
@@ -42,7 +42,7 @@ const preventRapidOtp = async (req, res, next) => {
     });
 
     if (existingOtp) {
-      return res.redirect(`/reset-password?email=${encodeURIComponent(email)}&message=${encodeURIComponent('OTP đã được gửi. Vui lòng kiểm tra email hoặc nhập mã để đặt lại mật khẩu.')}&success=false`);
+      return res.redirect(`/reset-password?email=${encodeURIComponent(email)}&message=${encodeURIComponent('OTP da duoc gui. Vui long kiem tra email hoac nhap ma de dat lai mat khau.')}&success=false`);
     }
 
     next();

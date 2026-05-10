@@ -14,9 +14,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   OtpCode.init({
-    email: DataTypes.STRING,
-    otp: DataTypes.STRING,
-    expiresAt: DataTypes.DATE
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    otp: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    expiresAt: {
+      type: DataTypes.DATE,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'OtpCode',
