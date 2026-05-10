@@ -10,7 +10,7 @@ import validateUpdateProfile from '../middlewares/validateUpdateProfile';
 
 const router = express.Router();
 
-router.get('/', (req, res) => res.redirect('/register'));
+router.get('/', (req, res) => res.redirect('/login'));
 router.get('/register', (req, res) => res.render('register'));
 router.get('/verify-register-otp', (req, res) => res.render('verifyRegisterOtp'));
 router.get('/login', (req, res) => res.render('login', {
