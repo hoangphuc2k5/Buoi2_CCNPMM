@@ -4,8 +4,12 @@ const tabs = document.querySelectorAll(".tab");
 const panels = document.querySelectorAll(".card[data-panel]");
 
 const setActivePanel = (target) => {
-  tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === target));
-  panels.forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === target));
+  tabs.forEach((tab) =>
+    tab.classList.toggle("active", tab.dataset.tab === target),
+  );
+  panels.forEach((panel) =>
+    panel.classList.toggle("active", panel.dataset.panel === target),
+  );
 };
 
 tabs.forEach((tab) => {
@@ -34,7 +38,7 @@ const handleSubmit = (form, endpoint, method = "POST", withToken = false) => {
       const response = await fetch(`${API_BASE}${endpoint}`, {
         method,
         headers,
-        body: JSON.stringify(payload)
+        body: method === "GET" ? undefined : JSON.stringify(payload),
       });
 
       const result = await response.json();
@@ -45,9 +49,32 @@ const handleSubmit = (form, endpoint, method = "POST", withToken = false) => {
   });
 };
 
-handleSubmit(document.querySelector('[data-panel="register"]'), "/auth/register");
-handleSubmit(document.querySelector('[data-panel="verify"]'), "/auth/verify-otp");
+handleSubmit(
+  document.querySelector('[data-panel="register"]'),
+  "/auth/register",
+);
+handleSubmit(
+  document.querySelector('[data-panel="verify"]'),
+  "/auth/verify-otp",
+);
 handleSubmit(document.querySelector('[data-panel="login"]'), "/auth/login");
-handleSubmit(document.querySelector('[data-panel="forgot"]'), "/auth/forgot-password");
-handleSubmit(document.querySelector('[data-panel="reset"]'), "/auth/reset-password");
-handleSubmit(document.querySelector('[data-panel="profile"]'), "/users/profile", "PUT", true);
+handleSubmit(
+  document.querySelector('[data-panel="forgot"]'),
+  "/auth/forgot-password",
+);
+handleSubmit(
+  document.querySelector('[data-panel="reset"]'),
+  "/auth/reset-password",
+);
+handleSubmit(
+  document.querySelector('[data-panel="view-profile"]'),
+  "/users/profile",
+  "GET",
+  true,
+);
+handleSubmit(
+  document.querySelector('[data-panel="profile"]'),
+  "/users/profile",
+  "PUT",
+  true,
+);

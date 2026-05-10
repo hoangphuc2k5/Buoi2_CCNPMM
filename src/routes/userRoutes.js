@@ -7,16 +7,18 @@ const userController = require("../controllers/userController");
 
 const router = express.Router();
 
+router.get("/profile", verifyToken, userController.getProfile);
+
 router.put(
   "/profile",
   verifyToken,
   [
     body("fullName").optional().isString().isLength({ max: 255 }),
     body("phone").optional().isString().isLength({ max: 30 }),
-    body("bio").optional().isString().isLength({ max: 500 })
+    body("bio").optional().isString().isLength({ max: 500 }),
   ],
   validate,
-  userController.updateProfile
+  userController.updateProfile,
 );
 
 module.exports = router;
