@@ -11,6 +11,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
+  User.init({
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
   User.init(
     {
       email: DataTypes.STRING,

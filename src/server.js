@@ -6,7 +6,7 @@ import authRoutes from './route/auth';
 import configViewEngine from './config/viewEngine';
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

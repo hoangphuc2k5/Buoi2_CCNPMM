@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dang ky tai khoan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 480px;
+            margin: 40px auto;
+            line-height: 1.5;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin: 6px 0 14px;
+        }
+        button {
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+        a {
+            display: inline-block;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Dang ky tai khoan</h2>
+    <p>Nhap thong tin de nhan OTP kich hoat qua mail.</p>
+
+    <p id="message"></p>
+
+    <form id="registerForm">
+        <label>Email:</label>
+        <input type="email" name="email" placeholder="Nhap email" required />
+
+        <label>Mat khau:</label>
+        <input type="password" name="password" placeholder="Nhap mat khau" required />
+
+        <label>Xac nhan mat khau:</label>
+        <input type="password" name="confirmPassword" placeholder="Nhap lai mat khau" required />
+
+        <button type="submit">Dang ky</button>
+    </form>
+
+    <a href="/verify-register-otp">Den trang nhap OTP kich hoat</a>
+
+    <script>
+        const form = document.getElementById('registerForm');
+        const message = document.getElementById('message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const payload = {
+                email: form.email.value,
+                password: form.password.value,
+                confirmPassword: form.confirmPassword.value,
+            };
+
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+            message.textContent = data.message;
+            message.className = data.success ? 'success' : 'error';
+        });
+    </script>
+</body>
+</html>

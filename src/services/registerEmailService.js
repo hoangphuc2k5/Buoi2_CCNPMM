@@ -10,14 +10,14 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-let sendOtpEmail = async (toEmail, otp) => {
+let sendRegisterOtpEmail = async (toEmail, otp) => {
     try {
         await transporter.sendMail({
             from: `"He thong" <${process.env.SMTP_USER}>`,
             to: toEmail,
-            subject: 'Ma OTP dat lai mat khau',
+            subject: 'Ma OTP kich hoat tai khoan',
             html: `
-                <h2>Ma OTP cua ban la:</h2>
+                <h2>Ma OTP kich hoat tai khoan cua ban la:</h2>
                 <h1 style="letter-spacing: 8px; color: #2563eb;">${otp}</h1>
                 <p>Ma co hieu luc trong <b>5 phut</b>.</p>
             `,
@@ -27,4 +27,4 @@ let sendOtpEmail = async (toEmail, otp) => {
     }
 }
 
-export { sendOtpEmail };
+export { sendRegisterOtpEmail };
